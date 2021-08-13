@@ -1,0 +1,124 @@
+---
+title: "EDS 221 Day 4 Tasks and Activities"
+author: "Halina Do-Linh"
+date: "8/12/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(tidyverse)
+```
+
+## Task 1
+
+```{r}
+
+weekdays <- c("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+transects <- c("Transect A", "Transect B", "Transect C")
+
+wk_trans_matrix <- matrix(ncol = length(transects), nrow = length(weekdays))
+
+for (i in seq_along(transects)) {
+  for (j in seq_along(weekdays)) {
+    wk_trans_fill <- print(paste(weekdays[j], "-", transects[i]))
+    wk_trans_matrix[j, i] <- wk_trans_fill
+  }
+}
+
+wk_trans_matrix
+
+# j is row, i is column
+# inner loop rows
+# outer loop columns
+```
+
+## Task 2 
+
+```{r}
+force <- function(mass, acceleration) {
+  force = mass * acceleration
+  return(paste("The resulting force is", force, "Newtons"))
+}
+
+force(12, 3)
+```
+
+## Task 3
+Write a function called name_column that, given a data frame name and a number, will return the column name associated with that column number. Add an error message if the column number is < 1, or if the number exceeds the number of columns in the data frame. Test the function using the mtcars data frame.
+
+```{r}
+name_column <- function(df, number) {
+  return(colnames(df[number]))
+ 
+   if (number < 1) {
+    stop("Number cannot be less than 1")
+  } else if (number > ncol(df)) {
+    stop("Number cannot be more than number of columns in data frame")
+  }
+}
+
+name_column(mtcars, 15)
+
+# need to come back to this
+```
+
+
+## Task 4
+
+ W=aLb
+
+```{r}
+# alternatively I could make vectors for each column and use data.frame() with those vectors
+
+fish_parms <- data.frame(sci_name = c("Chanos chanos", "Sphyraena barracuda", "Caranx ignobilis"), common_name = c("Milkfish", "Great barracuda", "Giant trevally"), a_est = c(0.0905, 0.0181, 0.0353), b_est = c(2.52, 3.27, 3.05))
+
+fish_weight <- function(fish_name, tot_length) {
+  select_fish <- dplyr::filter(fish_parms, common_name == fish_name)
+  a = select_fish$a_est
+  b = select_fish$b_est
+  fish_weight = a * tot_length ^ b
+  return(fish_weight)
+}
+
+fish_weight("Milkfish", 6)
+
+```
+
+
+## Task 5
+
+```{r}
+wave_power <- function(wave_height, period) {
+  wave_power = 0.5 * (wave_height)^2 * period
+  return(wave_power)
+}
+
+wh_seq <- seq(from = 0, to = 3, by = 0.2)
+
+wave_power(wh_seq, 8)
+
+```
+
+## Task 6 
+
+```{r}
+
+
+wave_power <- function(water_depth, wave_height, period) {
+  if (water_depth > 12) {
+    wave_power = 0.5 * (wave_height)^2 * period
+    message("Deep water equation used")
+    return(wave_power)
+  }
+  if (water_depth <= 12) {
+    wave_power = 0.81 * wave_height ^ 2 * period
+    message("Shallow water equation used") 
+    return(wave_power)
+  }
+ 
+}
+
+wave_power(5, 12, 12)
+```
+
